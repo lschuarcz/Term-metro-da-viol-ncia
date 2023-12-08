@@ -13,6 +13,9 @@ class _QuestionnaireAppState extends State<QuestionarioApp> {
   int respostaAtual = 0;
   bool resposta = false;
   bool mostrarVeredito = false;
+  int imagemAtual = 0;
+  bool eRelacionamentoAbusivo = false;
+
   List<String> partesDoTermometro = [
     'assets/00.png',
     'assets/01.png',
@@ -37,78 +40,93 @@ class _QuestionnaireAppState extends State<QuestionarioApp> {
     'assets/20.png',
   ];
 
+  // Function to handle user's response to a question
   void answerQuestion(bool respostaUsuario) {
     setState(() {
       resposta = respostaUsuario;
       respostaAtual++;
+
       if (respostaAtual == partesDoTermometro.length) {
         mostrarVeredito = true;
       }
     });
   }
 
-  @override
+  // Function to build the widget
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'Flutter Demo',
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.deepPurple),
+      ),
       home: Scaffold(
         appBar: AppBar(
-          title: Text('Questionnaire App'),
+          title: Text('Termômetro da Violência'),
         ),
         body: Center(
           child: mostrarVeredito
-              ? Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text('Veredito Final:'),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: partesDoTermometro.map((imagePath) {
-                        return Image.asset(
-                          imagePath,
-                          height: 20,
-                          width: 10,
-                        );
-                      }).toList(),
-                    ),
-                    Text(resposta
-                        ? 'Relacionamento Abusivo'
-                        : 'Relacionamento Saudável'),
-                  ],
-                )
-              : Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    resposta
-                        ? Image.asset(
-                            partesDoTermometro[respostaAtual],
-                            height: 600,
-                            width: 100,
-                          )
-                        : Image.asset(
-                            partesDoTermometro[
-                                respostaAtual != 0 ? respostaAtual - 1 : 0],
-                            height: 600,
-                            width: 100,
-                          ),
-                    SizedBox(width: 20),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text('Pergunta ${respostaAtual + 1}: Você concorda?'),
-                        ElevatedButton(
-                          onPressed: () => answerQuestion(true),
-                          child: Text('Sim'),
-                        ),
-                        ElevatedButton(
-                          onPressed: () => answerQuestion(false),
-                          child: Text('Não'),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
+              ? buildFinalVerdict()
+              : buildQuestion(),
         ),
       ),
+    );
+  }
+
+  // Widget for displaying the final verdict
+  Widget buildFinalVerdict() {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text('Veredito Final:'),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: partesDoTermometro.map((imagePath) {
+            return Image.asset(
+              imagePath,
+              height: 20,
+              width: 10,
+            );
+          }).toList(),
+        ),
+        Text(resposta ? 'Relacionamento Abusivo' : 'Relacionamento Saudável'),
+      ],
+    );
+  }
+
+  // Widget for building a question
+  Widget buildQuestion() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        resposta
+            ? Image.asset(
+                partesDoTermometro[respostaAtual],
+                height: 600,
+                width: 100,
+              )
+            : Image.asset(
+                partesDoTermometro[
+                    respostaAtual != 0 ? respostaAtual - 1 : 0],
+                height: 600,
+                width: 100,
+              ),
+        SizedBox(width: 20),
+        Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text('Pergunta ${respostaAtual + 1}: Você concorda?'),
+            ElevatedButton(
+              onPressed: () => answerQuestion(true),
+              child: Text('Sim'),
+            ),
+            ElevatedButton(
+              onPressed: () => answerQuestion(false),
+              child: Text('Não'),
+            ),
+          ],
+        ),
+      ],
     );
   }
 }
