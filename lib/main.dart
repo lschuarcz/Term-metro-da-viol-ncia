@@ -65,9 +65,7 @@ class _QuestionnaireAppState extends State<QuestionarioApp> {
           title: Text('Termômetro da Violência'),
         ),
         body: Center(
-          child: mostrarVeredito
-              ? buildFinalVerdict()
-              : buildQuestion(),
+          child: mostrarVeredito ? buildFinalVerdict() : buildQuestion(),
         ),
       ),
     );
@@ -96,34 +94,37 @@ class _QuestionnaireAppState extends State<QuestionarioApp> {
 
   // Widget for building a question
   Widget buildQuestion() {
-    return Row(
+    return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         resposta
             ? Image.asset(
                 partesDoTermometro[respostaAtual],
-                height: 600,
+                height: 300,
                 width: 100,
               )
             : Image.asset(
-                partesDoTermometro[
-                    respostaAtual != 0 ? respostaAtual - 1 : 0],
-                height: 600,
+                partesDoTermometro[respostaAtual != 0 ? respostaAtual - 1 : 0],
+                height: 300,
                 width: 100,
               ),
-        SizedBox(width: 20),
-        Column(
+        SizedBox(height: 30),
+        Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+          Text('Pergunta ${respostaAtual + 1}: Você concorda?'),
+          SizedBox(height: 30),
+        ]),
+        Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text('Pergunta ${respostaAtual + 1}: Você concorda?'),
             ElevatedButton(
               onPressed: () => answerQuestion(true),
               child: Text('Sim'),
             ),
+            SizedBox(width: 30),
             ElevatedButton(
               onPressed: () => answerQuestion(false),
               child: Text('Não'),
-            ),
+            )
           ],
         ),
       ],
