@@ -40,18 +40,6 @@ class _QuestionnaireAppState extends State<QuestionarioApp> {
     'assets/20.png',
   ];
 
-  // Function to handle user's response to a question
-  void answerQuestion(bool respostaUsuario) {
-    setState(() {
-      resposta = respostaUsuario;
-      respostaAtual++;
-
-      if (respostaAtual == partesDoTermometro.length) {
-        mostrarVeredito = true;
-      }
-    });
-  }
-
   List<String> pergunta = [
     'Pergunta 0: Seu companheiro(a) já mudou de comportamento após pedir algo e não ser atendido ?',
     'Pergunta 1: Pede para você se afastar de amigos ou familiares com argumentos de que não são boa influência pra você ?',
@@ -74,9 +62,19 @@ class _QuestionnaireAppState extends State<QuestionarioApp> {
     'Pergunta 18: Tenta controlar como você gasta o seu dinheiro ?',
     'Pergunta 19: Já forçou uma relação sexual ou te chantageou dizendo que é sua obrigação?',
     'Pergunta 20: Seu companheiro(a) já falou ou insinuou que vai te matar?',
-
-    // Adicione as perguntas restantes aqui
   ];
+
+  // Function to handle user's response to a question
+  void answerQuestion(bool respostaUsuario) {
+    setState(() {
+      resposta = respostaUsuario;
+      respostaAtual++;
+
+      if (respostaAtual == partesDoTermometro.length) {
+        mostrarVeredito = true;
+      }
+    });
+  }
 
   // Function to build the widget
   Widget build(BuildContext context) {
